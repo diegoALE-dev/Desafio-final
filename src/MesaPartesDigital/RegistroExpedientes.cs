@@ -11,6 +11,12 @@ public static class RegistroExpedientes
 
     public static void RegistrarExpediente()
     {
+        if (totalExpedientes >= CapacidadMaxima)
+        {
+            Console.WriteLine("[!] Capacidad máxima alcanzada.");
+            return;
+        }
+
         Console.WriteLine("--- Registro de Nuevo Expediente ---");
 
         Console.Write("Ingrese DNI (8 dígitos): ");
@@ -41,22 +47,24 @@ public static class RegistroExpedientes
         correos = correo;
         asuntos = asunto;
 
-        // --- CONEXIÓN CON TU MÓDULO (CONSOLIDADOS EN DATOSGLOBALES Y ARCHIVO) ---
-        if (totalExpedientes < CapacidadMaxima)
+        int indice = totalExpedientes;
+        DateTime fecha = DateTime.Today;
+        codigos[indice] = GenerarCodigoExpediente(fecha);
+        DatosExpedientes.dni[indice] = dni;
+        DatosExpedientes.nombres[indice] = nombre + " " + apellido;
+        DatosExpedientes.correos[indice] = correo;
+        DatosExpedientes.asuntos[indice] = asunto;
+        fechasRegistro[indice] = fecha;
+        estados[indice] = EstadoTramite.Registrado;
+
+        totalExpedientes++;
+        if (!ArchivoExpedientes.GuardarEnArchivo())
         {
-            codigos[totalExpedientes] = "EXP-" + (totalExpedientes + 1).ToString("D3");
-            DatosExpedientes.dni[totalExpedientes] = dni;
-            DatosExpedientes.nombres[totalExpedientes] = nombre + " " + apellido;
-            DatosExpedientes.correos[totalExpedientes] = correo;
-            DatosExpedientes.asuntos[totalExpedientes] = asunto;
-
-            totalExpedientes++;
-
-            // Llamamos a tu método para guardar en el .txt
-            ArchivoExpedientes.GuardarEnArchivo();
+            totalExpedientes--;
+            return;
         }
 
-        Console.WriteLine("Expediente registrado exitosamente.");
+        Console.WriteLine($"Expediente registrado exitosamente. Código: {codigos[indice]}");
         Console.WriteLine($"Total de expedientes registrados: {totalExpedientes}");
     }
 }

@@ -12,46 +12,36 @@ public static class OrdenamientoExpedientes
             return;
         }
 
+        // Ordenamos las posiciones para que todos los datos de la ficha sigan juntos.
+        int[] indices = new int[totalExpedientes];
+        for (int i = 0; i < totalExpedientes; i++)
+        {
+            indices[i] = i;
+        }
+
         for (int i = 0; i < totalExpedientes - 1; i++)
         {
             for (int j = i + 1; j < totalExpedientes; j++)
             {
-                if (string.Compare(codigos[i], codigos[j],
-                    StringComparison.Ordinal) > 0)
+                if (string.Compare(codigos[indices[i]], codigos[indices[j]],
+                    StringComparison.OrdinalIgnoreCase) > 0)
                 {
-                    string auxCod = codigos[i];
-                    codigos[i] = codigos[j];
-                    codigos[j] = auxCod;
-
-                    string auxDni = dni[i];
-                    dni[i] = dni[j];
-                    dni[j] = auxDni;
-
-                    string auxNom = nombres[i];
-                    nombres[i] = nombres[j];
-                    nombres[j] = auxNom;
-
-                    string auxCor = correos[i];
-                    correos[i] = correos[j];
-                    correos[j] = auxCor;
-
-                    string auxAsu = asuntos[i];
-                    asuntos[i] = asuntos[j];
-                    asuntos[j] = auxAsu;
+                    int auxiliar = indices[i];
+                    indices[i] = indices[j];
+                    indices[j] = auxiliar;
                 }
             }
         }
 
         Console.WriteLine("\n[✓] ¡Expedientes ordenados correctamente por Código!");
 
-        for (int i = 0; i < totalExpedientes; i++)
+        for (int i = 0; i < indices.Length; i++)
         {
+            int indice = indices[i];
             Console.WriteLine(
-                $"Código: {codigos[i]} | DNI: {dni[i]} | " +
-                $"Nombre: {nombres[i]} | Correo: {correos[i]} | " +
-                $"Asunto: {asuntos[i]}");
+                $"Código: {codigos[indice]} | DNI: {dni[indice]} | " +
+                $"Nombre: {nombres[indice]} | Correo: {correos[indice]} | " +
+                $"Asunto: {asuntos[indice]}");
         }
-
-        ArchivoExpedientes.GuardarEnArchivo();
     }
 }
