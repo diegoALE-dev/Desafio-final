@@ -26,10 +26,10 @@ public static class RegistroExpedientes
         string numeroDni = LeerDni();
         if (numeroDni == null) return;
 
-        string nombre = LeerTextoObligatorio("Ingrese nombres: ");
+        string nombre = LeerTexto("Ingrese nombres: ");
         if (nombre == null) return;
 
-        string apellido = LeerTextoObligatorio("Ingrese apellidos: ");
+        string apellido = LeerTexto("Ingrese apellidos: ");
         if (apellido == null) return;
 
         string correo = LeerCorreo();
@@ -38,20 +38,14 @@ public static class RegistroExpedientes
         string telefono = LeerTelefono();
         if (telefono == null) return;
 
-        string direccion = LeerTextoObligatorio("Ingrese dirección: ");
+        string direccion = LeerTexto("Ingrese dirección: ");
         if (direccion == null) return;
 
         int? cantidadFolios = LeerFolios();
         if (cantidadFolios == null) return;
 
-        Console.Write("Ingrese asunto (opcional): ");
-        string asunto = Console.ReadLine() ?? "";
-
-        if (!EsTextoSeguro(asunto))
-        {
-            Console.WriteLine("[!] El asunto contiene caracteres no permitidos.");
-            return;
-        }
+        string asunto = LeerTexto("Ingrese asunto (opcional): ", obligatorio: false);
+        if (asunto == null) return;
 
         // Preparar el expediente.
         int indice = totalExpedientes;
@@ -94,10 +88,10 @@ public static class RegistroExpedientes
             return;
         }
 
-        Console.WriteLine("\n[✓] Expediente registrado correctamente.");
-        Console.WriteLine("Código: " + codigos[indice]);
-        Console.WriteLine("Tipo de trámite: " + tiposTramite[indice]);
-        Console.WriteLine("Estado: Registrado");
+        Consola.EscribirResultado("\n[✓] Expediente registrado correctamente.");
+        Consola.EscribirResultado("Código: " + codigos[indice]);
+        Consola.EscribirResultado("Tipo de trámite: " + tiposTramite[indice]);
+        Consola.EscribirResultado("Estado: Registrado");
     }
 
     // CATÁLOGO DE TRÁMITES
@@ -154,8 +148,8 @@ public static class RegistroExpedientes
         }
     }
 
-    // VALIDAR TEXTOS OBLIGATORIOS
-    private static string LeerTextoObligatorio(string mensaje)
+    // VALIDAR CAMPOS DE TEXTO
+    private static string LeerTexto(string mensaje, bool obligatorio = true)
     {
         while (true)
         {
@@ -166,10 +160,10 @@ public static class RegistroExpedientes
 
             valor = valor.Trim();
 
-            if (!string.IsNullOrWhiteSpace(valor) && EsTextoSeguro(valor))
+            if ((!obligatorio || valor.Length > 0) && EsTextoSeguro(valor))
                 return valor;
 
-            Console.WriteLine("[!] Ingrese un texto válido.");
+            Console.WriteLine("[!] Ingrese un texto válido sin el carácter |.");
         }
     }
 

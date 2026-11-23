@@ -17,12 +17,12 @@ public static class EstadosExpedientes
         string motivoAnterior = motivosObservacion[indice];
 
         Console.WriteLine("\n--- ACTUALIZAR ESTADO DEL TRÁMITE ---");
-        Console.WriteLine("Código: " + codigos[indice]);
+        Consola.EscribirResultado("Código: " + codigos[indice]);
 
         // Expedientes antiguos sin estado.
         if (estadoAnterior == null)
         {
-            Console.WriteLine("Estado actual: Sin información");
+            Consola.EscribirResultado("Estado actual: Sin información");
             Console.WriteLine("1. Confirmar como Registrado");
             Console.WriteLine("0. Volver");
             Console.Write("Seleccione: ");
@@ -42,7 +42,7 @@ public static class EstadosExpedientes
         }
         else
         {
-            Console.WriteLine("Estado actual: " + estadoAnterior);
+            Consola.EscribirResultado("Estado actual: " + estadoAnterior);
 
             switch (estadoAnterior.Value)
             {
@@ -114,7 +114,7 @@ public static class EstadosExpedientes
 
                 case EstadoTramite.Observado:
 
-                    Console.WriteLine("Motivo: " + motivosObservacion[indice]);
+                    Consola.EscribirResultado("Motivo: " + motivosObservacion[indice]);
                     Console.WriteLine("1. Volver a En revisión");
                     Console.WriteLine("0. Volver");
                     Console.Write("Seleccione: ");
@@ -131,12 +131,13 @@ public static class EstadosExpedientes
                     }
 
                     estados[indice] = EstadoTramite.EnRevision;
+                    motivosObservacion[indice] = "";
                     break;
 
                 case EstadoTramite.Atendido:
 
-                    Console.WriteLine("[✓] Este trámite ya fue atendido.");
-                    Console.WriteLine("El proceso ha finalizado.");
+                    Consola.EscribirResultado("[✓] Este trámite ya fue atendido.");
+                    Consola.EscribirResultado("El proceso ha finalizado.");
                     return;
             }
         }
@@ -152,7 +153,7 @@ public static class EstadosExpedientes
             return;
         }
 
-        Console.WriteLine("\n[✓] Estado actualizado correctamente.");
-        Console.WriteLine("Nuevo estado: " + estados[indice]);
+        Consola.EscribirResultado("\n[✓] Estado actualizado correctamente.");
+        Consola.EscribirResultado("Nuevo estado: " + estados[indice]);
     }
 }
