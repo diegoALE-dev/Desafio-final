@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using static DatosExpedientes;
@@ -6,6 +7,7 @@ using static DatosExpedientes;
 public static class ArchivoExpedientes
 {
     private const string NombreArchivo = "expedientes.txt";
+    private const string NombreArchivoDemo = "expedientes-demo.txt";
     private const string FormatoFecha = "yyyy-MM-dd";
     private static bool cargaCompleta = true;
 
@@ -87,8 +89,9 @@ public static class ArchivoExpedientes
 
         try
         {
+            IEnumerable<string> lineas = LeerExpedientesIniciales(out string archivo);
             int numeroLinea = 0;
-            foreach (string linea in File.ReadLines(NombreArchivo))
+            foreach (string linea in lineas)
             {
                 numeroLinea++;
                 if (string.IsNullOrWhiteSpace(linea))
@@ -105,14 +108,14 @@ public static class ArchivoExpedientes
 
                 if (!CargarLinea(linea.Split('|')))
                 {
-                    Console.WriteLine($"[!] No se pudo cargar la línea {numeroLinea} de expedientes.txt.");
+                    Console.WriteLine($"[!] No se pudo cargar la línea {numeroLinea} de {archivo}.");
                     cargaCompleta = false;
                 }
             }
         }
         catch (FileNotFoundException)
         {
-            // La primera ejecución comienza sin expedientes.
+            // Si falta también el archivo de demostración, se empieza con una lista vacía.
         }
         catch (IOException)
         {
@@ -128,6 +131,20 @@ public static class ArchivoExpedientes
         if (!cargaCompleta)
         {
             Console.WriteLine("[!] Puedes consultar lo cargado. El guardado quedó bloqueado.");
+        }
+    }
+
+    private static IEnumerable<string> LeerExpedientesIniciales(out string archivo)
+    {
+        archivo = NombreArchivo;
+        try
+        {
+            return File.ReadLines(archivo);
+        }
+        catch (FileNotFoundException)
+        {
+            archivo = NombreArchivoDemo;
+            return File.ReadLines(Path.Combine(AppContext.BaseDirectory, archivo));
         }
     }
 

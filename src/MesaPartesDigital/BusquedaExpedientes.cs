@@ -212,7 +212,7 @@ public static class BusquedaExpedientes
     public static void MostrarResumen(int indice)
     {
         string fecha = fechasRegistro[indice]?.ToString("dd/MM/yyyy") ?? "Sin información";
-        Console.WriteLine($"{codigos[indice]} | {TextoDisponible(tiposTramite[indice])} | " +
+        Consola.EscribirResultado($"{codigos[indice]} | {TextoDisponible(tiposTramite[indice])} | " +
                           $"{fecha} | {NombreEstado(estados[indice])}");
     }
 
@@ -220,17 +220,17 @@ public static class BusquedaExpedientes
     {
         Console.WriteLine("\n--- FICHA DEL EXPEDIENTE ---");
         MostrarResumen(indice);
-        Console.WriteLine($"DNI: {dni[indice]}");
-        Console.WriteLine($"Nombre: {TextoDisponible(nombres[indice])}");
-        Console.WriteLine($"Correo: {TextoDisponible(correos[indice])}");
-        Console.WriteLine($"Teléfono: {TextoDisponible(telefonos[indice])}");
-        Console.WriteLine($"Dirección: {TextoDisponible(direcciones[indice])}");
-        Console.WriteLine($"Folios: {folios[indice]?.ToString() ?? "Sin información"}");
-        Console.WriteLine($"Asunto: {TextoDisponible(asuntos[indice])}");
+        Consola.EscribirResultado($"DNI: {dni[indice]}");
+        Consola.EscribirResultado($"Nombre: {TextoDisponible(nombres[indice])}");
+        Consola.EscribirResultado($"Correo: {TextoDisponible(correos[indice])}");
+        Consola.EscribirResultado($"Teléfono: {TextoDisponible(telefonos[indice])}");
+        Consola.EscribirResultado($"Dirección: {TextoDisponible(direcciones[indice])}");
+        Consola.EscribirResultado($"Folios: {folios[indice]?.ToString() ?? "Sin información"}");
+        Consola.EscribirResultado($"Asunto: {TextoDisponible(asuntos[indice])}");
 
         if (estados[indice] == EstadoTramite.Observado)
         {
-            Console.WriteLine($"Motivo: {TextoDisponible(motivosObservacion[indice])}");
+            Consola.EscribirResultado($"Motivo: {TextoDisponible(motivosObservacion[indice])}");
         }
     }
 

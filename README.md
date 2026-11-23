@@ -4,30 +4,27 @@ Aplicación de consola en C# que propone digitalizar el registro y la consulta d
 
 ## Objetivo
 
-Organizar la información de los trámites mediante un prototipo sencillo que permita registrar expedientes, validar el DNI del administrado, consultar registros, ordenarlos por código y conservarlos en archivos de texto.
+Organizar la información de los trámites mediante un prototipo que permita registrar expedientes, consultar su estado, ordenarlos y conservarlos en un archivo de texto.
 
-## Funcionalidades previstas
+## Funcionalidades
 
-- Registro del DNI, nombres y apellidos, correo electrónico y asunto del trámite.
+- Selección del tipo de trámite en el catálogo y registro de DNI, nombres, apellidos, correo electrónico, teléfono, dirección, número de folios y asunto opcional.
 - Validación del DNI con exactamente ocho dígitos numéricos, conservando los ceros iniciales.
-- Generación de códigos con el formato `EXP-2026-001`.
-- Búsqueda por código de expediente o DNI, con varias coincidencias para un mismo DNI.
-- Ordenamiento ascendente por código de expediente.
+- Generación de un código único con el formato `EXP-AAAA-NNN`, como `EXP-2026-001`.
+- Búsqueda por código o DNI y filtros por estado o tipo de trámite. El mismo DNI puede tener varios expedientes.
+- Actualización por código entre los estados Registrado, En revisión, Observado y Atendido. Al observar se registra un motivo y al subsanar se borra.
+- Listado por código, por fecha más antigua o por fecha más reciente.
 - Almacenamiento y recuperación de hasta 100 expedientes mediante un archivo de texto.
-
-## Estado actual
-
-El menú registra los datos básicos del expediente, permite buscar por código o DNI y lista los expedientes ordenados por código. La ficha del desafío final ya admite teléfono, dirección, folios, tipo de trámite, fecha, estado y motivo de observación. El catálogo, el seguimiento de estados y la consulta ampliada se incorporan en las siguientes ramas del equipo.
 
 ## Tecnologías y conceptos utilizados
 
 - C# y .NET 10.
 - Entrada y salida mediante `Console.ReadLine()` y `Console.WriteLine()`.
-- Estructuras de control `if`, `switch`, `while`, `for` y `do-while`.
+- Estructuras de control `if`, `switch`, `while` y `for`.
 - Métodos y clases estáticas para organizar el código.
 - Arreglos paralelos de texto, números, fechas y estados.
 
-Los algoritmos previstos utilizan búsqueda secuencial, ordenamiento con ciclos anidados y archivos de texto mediante `System.IO`. El proyecto no requiere paquetes NuGet adicionales.
+El programa utiliza búsqueda binaria recursiva por código, búsqueda secuencial por DNI y para los filtros, ordenamiento con ciclos anidados y archivos de texto mediante `System.IO`. El proyecto no requiere paquetes NuGet adicionales.
 
 ## Organización del código
 
@@ -38,8 +35,11 @@ src/
     ├── Program.cs
     ├── DatosExpedientes.cs
     ├── RegistroExpedientes.cs
+    ├── EstadosExpedientes.cs
     ├── BusquedaExpedientes.cs
     ├── OrdenamientoExpedientes.cs
+    ├── Consola.cs
+    ├── expedientes-demo.txt
     └── ArchivoExpedientes.cs
 ```
 
@@ -48,9 +48,12 @@ src/
 | `MesaPartesDigital.csproj` | Configuración del proyecto de consola y versión de .NET |
 | `Program.cs` | Menú principal y selección de opciones |
 | `DatosExpedientes.cs` | Arreglos de la ficha, generación de códigos, estados, contador y capacidad máxima |
-| `RegistroExpedientes.cs` | Módulo destinado al registro y la validación del DNI |
-| `BusquedaExpedientes.cs` | Módulo destinado a la consulta por código o DNI |
-| `OrdenamientoExpedientes.cs` | Módulo destinado al ordenamiento por código |
+| `RegistroExpedientes.cs` | Catálogo, registro y validación de los datos |
+| `EstadosExpedientes.cs` | Transiciones de estado y motivo de observación |
+| `BusquedaExpedientes.cs` | Búsquedas, filtros y visualización de fichas |
+| `OrdenamientoExpedientes.cs` | Listado ordenado por código o fecha |
+| `Consola.cs` | Resultados y confirmaciones en verde |
+| `expedientes-demo.txt` | Diez expedientes ficticios para practicar |
 | `ArchivoExpedientes.cs` | Módulo destinado a la lectura y escritura de datos |
 
 Los arreglos comparten el mismo índice para relacionar toda la ficha de cada expediente. La capacidad máxima es de **100 registros**.
@@ -66,13 +69,14 @@ Los arreglos comparten el mismo índice para relacionar toda la ficha de cada ex
 2. Seleccionar **Compilar > Compilar solución**.
 3. Ejecutar con **Depurar > Iniciar sin depurar** o **Ctrl + F5**.
 
-El menú presenta las siguientes opciones:
+Opciones del menú principal
 
 ```text
-1. Registrar Expediente
-2. Buscar Expediente
-3. Ordenar Expedientes por Código
-4. Salir
+1. Registrar expediente
+2. Buscar y consultar expediente
+3. Actualizar estado del trámite
+4. Listar y ordenar expedientes
+0. Salir
 ```
 
 Desde PowerShell, abierto en la raíz del repositorio, también puedes usar:
@@ -81,6 +85,16 @@ Desde PowerShell, abierto en la raíz del repositorio, también puedes usar:
 dotnet build src/MesaPartesDigital/MesaPartesDigital.csproj
 dotnet run --project src/MesaPartesDigital/MesaPartesDigital.csproj
 ```
+
+## Probar con los datos de demostración
+
+Al ejecutar el programa en una carpeta donde aún no existe `expedientes.txt`, se cargan automáticamente los diez expedientes ficticios de `expedientes-demo.txt`. Si ya hay un archivo local, el programa carga ese archivo. El primer cambio guardado conserva los datos y las modificaciones en `expedientes.txt`.
+
+- En **4. Listar y ordenar expedientes**, prueba los tres criterios y compara el orden de los diez resultados. Dos expedientes comparten fecha para comprobar el desempate por código.
+- En **2. Buscar y consultar expediente**, busca el DNI `00000001`. Aparecerán dos expedientes. También puedes filtrar por **Observado** y consultar sus motivos.
+- En **3. Actualizar estado del trámite**, prueba el código ficticio `EXP-2026-004`, que comienza como **Observado**.
+
+Para comenzar otra demostración conservando tus pruebas anteriores, ejecuta el programa desde una carpeta nueva. Con la ruta del proyecto, puedes usar `dotnet run --project "<ruta al archivo MesaPartesDigital.csproj>"` desde esa carpeta.
 
 ## Almacenamiento
 
@@ -91,4 +105,4 @@ codigo|dni|nombre|correo|asunto|telefono|direccion|folios|tipo|fecha|estado|moti
 EXP-2026-001|00123456|Ana Prueba|ana@example.org|Solicitud de licencia|987654321|Av. Ejemplo 123|3|Solicitud múltiple|2026-11-22|Registrado|
 ```
 
-La última columna guarda el motivo de observación y puede quedar vacía. Los campos que no existían en el parcial quedan vacíos. Si hay líneas inválidas, códigos repetidos o filas que exceden el límite, la aplicación permite consultar los expedientes válidos que alcanzó a cargar y bloquea el guardado. Así conserva el contenido original para que el equipo revise el archivo. Usa datos ficticios para las pruebas.
+La última columna guarda el motivo mientras el expediente está Observado. Los campos que no existían en el parcial quedan vacíos. Si hay líneas inválidas, códigos repetidos o filas que exceden el límite, la aplicación permite consultar los expedientes válidos que alcanzó a cargar y bloquea el guardado. Así conserva el contenido original para que el equipo revise el archivo. Usa datos ficticios para las pruebas.

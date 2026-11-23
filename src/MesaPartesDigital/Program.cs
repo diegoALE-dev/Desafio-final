@@ -1,6 +1,4 @@
-
 using System;
-using static DatosExpedientes;
 
 public static class Program
 {
@@ -8,109 +6,56 @@ public static class Program
     {
         ArchivoExpedientes.CargarDesdeArchivo();
 
-        int opcDoc = 0;
-
-        do
+        while (true)
         {
             Console.WriteLine("\n===========================================================");
             Console.WriteLine("  MESA DE PARTES DIGITAL - MUNICIPALIDAD DE LOS OLIVOS");
             Console.WriteLine("===========================================================");
-            Console.WriteLine("1. Registrar Expediente");
-            Console.WriteLine("2. Buscar Expediente");
-            Console.WriteLine("3. Ordenar Expedientes por Código");
-            Console.WriteLine("4. Actualizar Estado del Expediente");
-            Console.WriteLine("5. Visualizar Estados de Expedientes");
-            Console.WriteLine("6. Salir");
+            Console.WriteLine("1. Registrar expediente");
+            Console.WriteLine("2. Buscar y consultar expediente");
+            Console.WriteLine("3. Actualizar estado del trámite");
+            Console.WriteLine("4. Listar y ordenar expedientes");
+            Console.WriteLine("0. Salir");
             Console.Write("Seleccione una opción: ");
 
-            string entrada = Console.ReadLine();
-
-            if (entrada == null)
-                break;
-
-            if (!int.TryParse(entrada, out opcDoc))
+            switch (Console.ReadLine()?.Trim())
             {
-                Console.WriteLine("[!] Ingrese un número válido.");
-                continue;
-            }
-
-            switch (opcDoc)
-            {
-                case 1:
+                case "1":
                     RegistroExpedientes.RegistrarExpediente();
                     break;
-
-                case 2:
+                case "2":
                     BusquedaExpedientes.BuscarExpediente();
                     break;
-
-                case 3:
+                case "3":
+                    ActualizarExpedientePorCodigo();
+                    break;
+                case "4":
                     OrdenamientoExpedientes.OrdenarExpedientes();
                     break;
-
-                case 4:
-                    if (totalExpedientes == 0)
-                    {
-                        Console.WriteLine("[!] No hay expedientes registrados.");
-                        break;
-                    }
-
-                    Console.WriteLine("\n--- ACTUALIZAR ESTADO ---");
-
-                    for (int i = 0; i < totalExpedientes; i++)
-                    {
-                        Console.WriteLine(
-                            $"{i + 1}. Código: {codigos[i]} | Estado: {estados[i]?.ToString() ?? "Sin información"}");
-                    }
-
-                    Console.Write("\nSeleccione el expediente: ");
-
-                    if (int.TryParse(Console.ReadLine(), out int numero) &&
-                        numero >= 1 && numero <= totalExpedientes)
-                    {
-                        EstadosExpedientes.ActualizarEstado(numero - 1);
-                    }
-                    else
-                    {
-                        Console.WriteLine("[!] Selección inválida.");
-                    }
-                    break;
-
-                case 5:
-                    Console.WriteLine("\n--- ESTADOS DE EXPEDIENTES ---");
-
-                    if (totalExpedientes == 0)
-                    {
-                        Console.WriteLine("[!] No hay expedientes registrados.");
-                        break;
-                    }
-
-                    for (int i = 0; i < totalExpedientes; i++)
-                    {
-                        Console.WriteLine("\n--------------------------------");
-                        Console.WriteLine("Código: " + codigos[i]);
-                        Console.WriteLine("Solicitante: " + nombres[i]);
-                        Console.WriteLine("Estado: " +
-                            (estados[i]?.ToString() ?? "Sin información"));
-
-                        if (estados[i] == EstadoTramite.Observado)
-                        {
-                            Console.WriteLine("Motivo: " + motivosObservacion[i]);
-                        }
-                    }
-
-                    Console.WriteLine("--------------------------------");
-                    break;
-
-                case 6:
+                case "0":
+                case null:
                     Console.WriteLine("\nCerrando el sistema de la Municipalidad de Los Olivos...");
-                    break;
-
+                    return;
                 default:
-                    Console.WriteLine("[!] Opción inválida.");
+                    Console.WriteLine("[!] Elige una opción del 0 al 4.");
                     break;
             }
+        }
+    }
 
-        } while (opcDoc != 6);
+    private static void ActualizarExpedientePorCodigo()
+    {
+        Console.Write("Código de expediente: ");
+        string codigo = Console.ReadLine();
+        if (codigo == null) return;
+
+        int indice = BusquedaExpedientes.BuscarIndicePorCodigo(codigo);
+        if (indice == -1)
+        {
+            Console.WriteLine("[!] Expediente no encontrado.");
+            return;
+        }
+
+        EstadosExpedientes.ActualizarEstado(indice);
     }
 }
