@@ -39,6 +39,7 @@ src/
     ├── BusquedaExpedientes.cs
     ├── OrdenamientoExpedientes.cs
     ├── Consola.cs
+    ├── expedientes-demo.txt
     └── ArchivoExpedientes.cs
 ```
 
@@ -52,6 +53,7 @@ src/
 | `BusquedaExpedientes.cs` | Búsquedas, filtros y visualización de fichas |
 | `OrdenamientoExpedientes.cs` | Listado ordenado por código o fecha |
 | `Consola.cs` | Resultados y confirmaciones en verde |
+| `expedientes-demo.txt` | Diez expedientes ficticios para practicar |
 | `ArchivoExpedientes.cs` | Módulo destinado a la lectura y escritura de datos |
 
 Los arreglos comparten el mismo índice para relacionar toda la ficha de cada expediente. La capacidad máxima es de **100 registros**.
@@ -83,6 +85,16 @@ Desde PowerShell, abierto en la raíz del repositorio, también puedes usar:
 dotnet build src/MesaPartesDigital/MesaPartesDigital.csproj
 dotnet run --project src/MesaPartesDigital/MesaPartesDigital.csproj
 ```
+
+## Probar con los datos de demostración
+
+Al ejecutar el programa en una carpeta donde aún no existe `expedientes.txt`, se cargan automáticamente los diez expedientes ficticios de `expedientes-demo.txt`. Si ya hay un archivo local, el programa carga ese archivo. El primer cambio guardado conserva los datos y las modificaciones en `expedientes.txt`.
+
+- En **4. Listar y ordenar expedientes**, prueba los tres criterios y compara el orden de los diez resultados. Dos expedientes comparten fecha para comprobar el desempate por código.
+- En **2. Buscar y consultar expediente**, busca el DNI `00000001`. Aparecerán dos expedientes. También puedes filtrar por **Observado** y consultar sus motivos.
+- En **3. Actualizar estado del trámite**, prueba el código ficticio `EXP-2026-004`, que comienza como **Observado**.
+
+Para comenzar otra demostración conservando tus pruebas anteriores, ejecuta el programa desde una carpeta nueva. Con la ruta del proyecto, puedes usar `dotnet run --project "<ruta al archivo MesaPartesDigital.csproj>"` desde esa carpeta.
 
 ## Almacenamiento
 

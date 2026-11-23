@@ -1,0 +1,10 @@
+EXP-2026-006|00000001|Ana Demo|ana@example.org|Constancia de domicilio|000000001|Av. Demostración 101|3|Solicitud múltiple|2026-11-05|EnRevision|
+EXP-2026-002|00000002|Bruno Demo|bruno@example.org|Evaluación de deducción predial|000000002|Av. Demostración 102|8|Deducción del impuesto predial|2026-10-28|Atendido|
+EXP-2026-009|00000003|Carla Demo|carla@example.org|Revisión de inscripción predial|000000003|Av. Demostración 103|6|Deducción del impuesto predial|2026-11-11|Observado|Falta adjuntar la declaración de prueba.
+EXP-2026-001|00000001|Ana Demo|ana@example.org|Copia de un documento municipal|000000001|Av. Demostración 101|2|Solicitud múltiple|2026-10-22|Atendido|
+EXP-2026-008|00000008|Hugo Demo|hugo@example.org|Actualización de información predial|000000008|Av. Demostración 108|4|Deducción del impuesto predial|2026-11-02|Registrado|
+EXP-2026-003|00000003|Carla Demo|carla@example.org|Solicitud de información municipal|000000003|Av. Demostración 103|1|Solicitud múltiple|2026-10-28|EnRevision|
+EXP-2026-010|00000007|Gabriela Demo|gabriela@example.org|Solicitud de constancia municipal|000000007|Av. Demostración 107|2|Solicitud múltiple|2026-11-15|Registrado|
+EXP-2026-004|00000004|Diego Demo|diego@example.org|Verificación de requisitos prediales|000000004|Av. Demostración 104|5|Deducción del impuesto predial|2026-11-07|Observado|Falta la firma en el formulario de prueba.
+EXP-2026-007|00000006|Fabio Demo|fabio@example.org|Solicitud de evaluación predial|000000006|Av. Demostración 106|7|Deducción del impuesto predial|2026-11-06|EnRevision|
+EXP-2026-005|00000005|Elena Demo|elena@example.org|Solicitud de acceso a un expediente|000000005|Av. Demostración 105|3|Solicitud múltiple|2026-10-25|Registrado|
