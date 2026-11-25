@@ -15,6 +15,7 @@ public static class Program
             Console.WriteLine("2. Buscar y consultar expediente");
             Console.WriteLine("3. Actualizar estado del trámite");
             Console.WriteLine("4. Listar y ordenar expedientes");
+            Console.WriteLine("5. Estadísticas de expedientes");
             Console.WriteLine("0. Salir");
             Console.Write("Seleccione una opción: ");
 
@@ -32,12 +33,15 @@ public static class Program
                 case "4":
                     OrdenamientoExpedientes.OrdenarExpedientes();
                     break;
+                case "5":
+                    EstadisticasExpedientes.MostrarEstadisticas();
+                    break;
                 case "0":
                 case null:
                     Console.WriteLine("\nCerrando el sistema de la Municipalidad de Los Olivos...");
                     return;
                 default:
-                    Console.WriteLine("[!] Elige una opción del 0 al 4.");
+                    Console.WriteLine("[!] Elige una opción del 0 al 5.");
                     break;
             }
         }
